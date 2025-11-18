@@ -68,14 +68,33 @@ btnAgregar.addEventListener("click", function(event){
         totalEnProductos+= Number(txtNumber.value);
         costoTotal += precio * Number (txtNumber.value);
         cuerpoTabla.insertAdjacentHTML("beforeend", row);
-        contadorProductos.innertext = cont;
+
+        contadorProductos.innerText = cont;
         productosTotal.innerText = totalEnProductos;
-        precioTotal.innerText=new Intl.NumberFormat("es-MX", 
-            { style: "currency", currency: "MXN" }).format(costoTotal);
-        
+        precioTotal.innerText= costoTotal;
+            
+            let resumen={
+                "cont":cont,
+                "totalEnProductos": totalEnProductos,
+                "costoTotal": costoTotal
+            };
+            localStorage.setItem("resumen", JSON.stringify(resumen));
+
         txtName.value = "";
         txtNumber.value = "";
         txtName.focus();
     }
+});
+window.addEventListener("load", function(event){
+    event.preventDefault();
+    if(this.localStorage.getItem("resumen") != null){
+        let resumen = JSON.parse(localStorage.getItem("resumen"));
+        cont = resumen.cont;
+        totalEnProductos = resumen.totalEnProductos;
+        costoTotal = resumen.costoTotal;
+    }
+        contadorProductos.innerText = cont;
+        productosTotal.innerText = totalEnProductos;
+        precioTotal.innerText = costoTotal;
     
 });
